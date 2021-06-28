@@ -1,11 +1,6 @@
-// import "./styles.css";
-// import image1 from "./edit.png";
-// import image2 from "./delete.png";
-// import emptyCartImage from "./empty.png";
-
 let listOfItems;
 
-let emptyImage = document.getElementById("emptyCart");
+let emptyImage = document.getElementById("emptyCart"); //updating the image for empty cart
 emptyImage.src = "./assets/empty-cart.png";
 emptyImage.style.display = "none";
 
@@ -81,10 +76,6 @@ document.querySelector("#resetButton2").addEventListener("click", () => {
 	document.getElementById("addItemHeading").style.display = "block";
 	document.getElementById("addItemForm").style.display = "block";
 });
-// document.querySelector("#buttonInAlert").addEventListener("click", () => {
-// 	console.log("Hello Working here correctly");
-// 	document.getElementById("alertBox").style.display = "none";
-// });
 
 //When the page loads, initially  we will show "Add Grocery Item" Form
 document.getElementById("editItemHeading").style.display = "none";
@@ -153,7 +144,6 @@ function updateItemToList() {
 
 	//If we delete the entry, after pressing the edit button in the list
 	if (itemIndexInArray == -1) {
-		// alert("Sorry! There is no such item available in the cart");
 		document.getElementById("textInAlert").textContent =
 			"Sorry!! There is no such item available in the cart";
 		document.getElementById("alertBox").style.display = "inline-flex";
@@ -161,7 +151,6 @@ function updateItemToList() {
 			document.getElementById("alertBox").style.display = "none";
 		}, 5000);
 	} else if (Number(quantity) <= 0) {
-		// alert("Sorry!! We can not insert negative or zero quantity.");
 		document.getElementById("textInAlert").textContent =
 			"Sorry!! We can not insert negative or zero quantity";
 		document.getElementById("alertBox").style.display = "inline-flex";
