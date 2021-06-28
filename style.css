@@ -1,0 +1,364 @@
+body {
+	background-color: black;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	/* font-family: "Trebuchet MS", Arial, sans-serif; */
+}
+
+#groceryTitle {
+	display: flex;
+	justify-content: center;
+	font-size: larger;
+	color: white;
+}
+
+#screen {
+	display: flex;
+	height: 80vh;
+	margin-top: 5vh;
+	margin-bottom: 5vh;
+	justify-content: space-around;
+}
+
+/* CSS for Form */
+
+#form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10%;
+	background: linear-gradient(55deg, #ccffff, #ffcccc);
+	width: 45%;
+	height: 40%;
+	align-self: center;
+	border-radius: 2%;
+}
+
+#addItemForm,
+#editItemForm {
+	height: 100%;
+	overflow: scroll;
+}
+
+.submitButton {
+	width: 30%;
+	margin-right: 10%;
+	height: 15%;
+	border-radius: 1em;
+	color: white;
+	background-color: rgb(71, 74, 226);
+}
+
+h1,
+h2 {
+	font-family: "Trebuchet MS", Arial, sans-serif;
+}
+
+.resetButton {
+	width: 30%;
+	height: 15%;
+	border-radius: 1em;
+	color: white;
+	background-color: rgb(71, 74, 226);
+}
+
+.submitButton:hover,
+.submitButton:focus {
+	background-color: rgb(101, 102, 211);
+}
+
+.resetButton:hover,
+.resetButton:focus {
+	background-color: rgb(101, 102, 211);
+}
+
+button {
+	font-size: 90%;
+}
+
+/* css for grocer list */
+
+#groceryDivision {
+	background-color: rgb(236, 147, 199);
+	background: linear-gradient(55deg, #2bc0e4, #eaecc6);
+	width: 45%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow: scroll;
+	border-radius: 3%;
+}
+
+#emptyCart {
+	height: 25%;
+	width: 30%;
+	margin: 0 auto;
+	margin-top: 0%;
+}
+
+@media (max-height: 745px) {
+	body {
+		margin-bottom: 0%;
+	}
+	#form {
+		gap: 0%;
+	}
+
+	h2 {
+		margin-bottom: 1%;
+	}
+
+	#nameOfList {
+		margin-bottom: 0%;
+	}
+
+	#groceryDivision {
+		height: 70%;
+	}
+}
+
+ul {
+	padding-inline-start: 0px;
+}
+
+#groceryList {
+	background-color: rgb(238, 187, 120);
+	width: 95%;
+	list-style-type: decimal;
+}
+
+.divOfList {
+	height: 5em;
+	display: flex;
+	justify-content: space-between;
+}
+
+.divOfList:nth-child(odd) {
+	background-color: rgb(235, 201, 174);
+}
+
+.divOfList:nth-child(even) {
+	background-color: rgb(247, 232, 204);
+}
+
+.itemNameInList,
+.fullName,
+.quantityInList {
+	display: inline;
+}
+
+.mainParaInList {
+	display: inline-flex;
+	width: 80%;
+	gap: 1%;
+	margin-top: 0%;
+}
+
+.itemNameInList {
+	width: 60%;
+	overflow: scroll;
+	overflow-wrap: break-word;
+	max-height: 95%;
+	margin-left: 1%;
+}
+
+.quantityInList {
+	width: 37%;
+	overflow: scroll;
+	overflow-wrap: break-word;
+	max-height: 95%;
+}
+
+.divOfButtons {
+	/* display: inline-flex;
+	justify-content: space-around;
+	align-items: center;
+	max-height: 90%;
+	max-width: 20%; */
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	width: 20%;
+}
+
+.editButton {
+	width: 80%;
+	height: 40%;
+	background-color: rgb(57, 216, 57);
+	color: white;
+	border-radius: 1em;
+	border-color: white;
+	font-family: "Trebuchet MS", verdana;
+}
+
+.editButton:hover,
+.editButton:focus {
+	background-color: rgb(4, 150, 4);
+}
+
+.deleteButton {
+	width: 80%;
+	height: 40%;
+	background-color: rgb(236, 53, 53);
+	color: white;
+	border-radius: 1em;
+	border-color: white;
+	font-family: "Trebuchet MS", verdana;
+}
+
+.deleteButton:hover,
+.deleteButton:focus {
+	background-color: rgb(185, 3, 3);
+}
+
+#nameOfList {
+	color: black;
+}
+
+@media (max-width: 768px) {
+	body {
+		background-color: black;
+		height: 100%;
+	}
+
+	#groceryTitle {
+		margin: 0 auto;
+		font-size: large;
+	}
+
+	header > h1 {
+		margin: 0 auto;
+		font-size: 1.7em;
+	}
+
+	header {
+		display: flex;
+		justify-content: center;
+	}
+	#screen {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		row-gap: 5vh;
+		overflow: auto;
+	}
+	#form {
+		width: 90%;
+		background: linear-gradient(55deg, #ccffff, #ffcccc);
+		overflow: scroll;
+		min-height: 40%;
+	}
+
+	#nameOfList {
+		color: black;
+	}
+
+	#groceryDivision {
+		width: 90%;
+		background: linear-gradient(55deg, #2bc0e4, #eaecc6);
+		height: 70%;
+	}
+
+	ul {
+		overflow: scroll;
+		display: flex;
+		flex-direction: column;
+		list-style-type: none;
+		margin-left: 0%;
+	}
+
+	li {
+		margin-left: 0%;
+	}
+
+	#emptyCart {
+		height: 50%;
+		width: 30%;
+	}
+}
+
+@media (max-width: 359px) {
+	body {
+		font-size: 0.85em;
+	}
+	#form {
+		width: 90%;
+		height: 70%;
+	}
+
+	#addItemForm,
+	#editItemForm {
+		width: 100%;
+		max-height: 100%;
+	}
+
+	.submitButton,
+	.resetButton {
+		height: 15%;
+		width: 40%;
+		/* margin-right: 0%; */
+	}
+
+	h1 {
+		font-size: 1.3em;
+	}
+
+	header > h1 {
+		font-size: 1.3em;
+	}
+
+	h2 {
+		font-size: 1.3em;
+	}
+
+	.divOfList {
+		height: 6em;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.mainParaInList {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+	}
+
+	.itemNameInList,
+	.quantityInList {
+		height: 80%;
+	}
+
+	.divOfButtons {
+		flex-direction: row;
+		width: 100%;
+		height: 40%;
+		justify-content: center;
+		gap: 7%;
+	}
+
+	.deleteButton,
+	.editButton {
+		width: 30%;
+		height: 90%;
+	}
+
+	.mainParaInList {
+		height: 45%;
+	}
+}
+
+/* CSS for Alert  */
+#alertBox {
+	z-index: -1;
+	display: absolute;
+	bottom: 10%;
+	left: 10%;
+	width: auto;
+	border: 2px solid hsl(206, 74%, 54%);
+	background: hsl(206, 74%, 90%);
+	height: 20%;
+	margin-left: 0%;
+}
