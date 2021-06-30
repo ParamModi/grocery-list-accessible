@@ -19,6 +19,39 @@ body {
 	justify-content: space-around;
 }
 
+#skipLink {
+	position: absolute;
+	/* transition: top 0.5s; */
+	top: -3rem;
+}
+
+#skipLink:focus,
+#skipLink:focus-within {
+	position: absolute;
+	top: 0.5rem;
+	width: 45%;
+	display: inline-flex;
+	justify-content: space-around;
+	border: 2px solid hsl(206, 74%, 54%);
+	background: hsl(206, 74%, 90%);
+}
+
+/* CSS for Alert  */
+#alertBox {
+	z-index: -1;
+	position: absolute;
+	/* bottom: 10%;
+	left: 10%; */
+	bottom: 0%;
+	left: 0%;
+	width: auto;
+	height: auto;
+	border: 2px solid hsl(206, 74%, 54%);
+	background: hsl(206, 74%, 90%);
+	/* height: 20%; */
+	margin-left: 0%;
+}
+
 /* CSS for Form */
 
 #form {
@@ -68,6 +101,17 @@ h2 {
 
 .resetButton:hover,
 .resetButton:focus {
+	background-color: rgb(101, 102, 211);
+}
+
+#skipButton {
+	border-radius: 1em;
+	color: white;
+	background-color: rgb(71, 74, 226);
+}
+
+#skipButton:hover,
+#skipButton:focus {
 	background-color: rgb(101, 102, 211);
 }
 
@@ -184,7 +228,7 @@ ul {
 .editButton {
 	width: 80%;
 	height: 40%;
-	background-color: rgb(57, 216, 57);
+	background-color: rgb(9, 114, 9);
 	color: white;
 	border-radius: 1em;
 	border-color: white;
@@ -193,13 +237,13 @@ ul {
 
 .editButton:hover,
 .editButton:focus {
-	background-color: rgb(4, 150, 4);
+	background-color: rgb(44, 168, 44);
 }
 
 .deleteButton {
 	width: 80%;
 	height: 40%;
-	background-color: rgb(236, 53, 53);
+	background-color: rgb(190, 40, 40);
 	color: white;
 	border-radius: 1em;
 	border-color: white;
@@ -208,7 +252,7 @@ ul {
 
 .deleteButton:hover,
 .deleteButton:focus {
-	background-color: rgb(185, 3, 3);
+	background-color: rgb(236, 41, 41);
 }
 
 #nameOfList {
@@ -275,6 +319,10 @@ ul {
 	#emptyCart {
 		height: 50%;
 		width: 30%;
+	}
+	#skipLink:focus,
+	#skipLink:focus-within {
+		width: 60%;
 	}
 }
 
@@ -348,17 +396,9 @@ ul {
 	.mainParaInList {
 		height: 45%;
 	}
-}
-
-/* CSS for Alert  */
-#alertBox {
-	z-index: -1;
-	display: absolute;
-	bottom: 10%;
-	left: 10%;
-	width: auto;
-	border: 2px solid hsl(206, 74%, 54%);
-	background: hsl(206, 74%, 90%);
-	height: 20%;
-	margin-left: 0%;
+	#skipLink:focus,
+	#skipLink:focus-within {
+		width: 100%;
+		justify-content: space-between;
+	}
 }

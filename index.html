@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,6 +11,12 @@
   </head>
 
   <body>
+    <div id="skipLink" tabindex="0">
+      <form id="skipForm"><label for="skipElement" tabindex="-1">Skip to any Item in the list:<input type="textarea" id="skipElement" required tabindex="0">
+        </label>
+        <input type="button" id="skipButton" value="Search">
+      </form>
+    </div>
     <header id="groceryTitle"><h1>Grocery Application</h1></header>
     <div id="alertBox" role="alertdialog">
       <p id="textInAlert"></p>

@@ -18,13 +18,13 @@ if (listOfItems.length <= 0) {
 function createListElement(itemName, quantity) {
 	let listEntry = document.createElement("li");
 	listEntry.innerHTML = `
-  <div class="mainParaInList"><p class="itemNameInList">Item: <strong class="fullName">${itemName}</strong></p><p class="quantityInList">Quantity: <strong>${quantity}</strong></p></div>
+  <div class="mainParaInList"><p class="itemNameInList" id=${itemName}>Item: <strong class="fullName">${itemName}</strong></p><p class="quantityInList">Quantity: <strong>${quantity}</strong></p></div>
   `;
 	listEntry.classList.add("divOfList");
 
 	let editButton = document.createElement("button");
 	editButton.textContent = "Edit";
-	editButton.setAttribute("aria-label", "Edit the Quantity of " + itemName);
+	editButton.setAttribute("aria-describedby", itemName);
 	editButton.classList.add("editButton");
 	editButton.addEventListener("click", () => {
 		editItemFromList(itemName, quantity);
@@ -32,10 +32,7 @@ function createListElement(itemName, quantity) {
 
 	let deleteButton = document.createElement("button");
 	deleteButton.textContent = "Delete";
-	deleteButton.setAttribute(
-		"aria-label",
-		"Delete the " + itemName + " from the Grocery list"
-	);
+	deleteButton.setAttribute("aria-describedby", itemName);
 	deleteButton.classList.add("deleteButton");
 	deleteButton.addEventListener("click", () => {
 		deleteItemFromList(itemName, quantity);
@@ -47,6 +44,7 @@ function createListElement(itemName, quantity) {
 	containerOfButtons.append(deleteButton);
 
 	listEntry.append(containerOfButtons);
+	// listEntry.setAttribute("tabindex", "0");
 
 	return listEntry;
 }
@@ -62,6 +60,10 @@ listOfItems.forEach((data) => {
 });
 
 //Event Listneres for the buttons in the form
+document.getElementById("skipButton").addEventListener("click", () => {
+	skipToItem();
+});
+
 document.querySelector("#submitButton1").addEventListener("click", () => {
 	addItemToList();
 });
@@ -82,6 +84,28 @@ document.getElementById("editItemHeading").style.display = "none";
 document.getElementById("editItemForm").style.display = "none";
 document.getElementById("alertBox").style.display = "none";
 
+//Function for skip link
+function skipToItem() {
+	let itemName = document.getElementById("skipElement").value;
+	let itemIndexInArray = listOfItems.findIndex(
+		(entry) => entry["item"] == itemName
+	);
+	if (itemIndexInArray == -1) {
+		document.getElementById("textInAlert").textContent =
+			"Sorry!! There is no such Item available in the Grocery List";
+		document.getElementById("alertBox").style.display = "inline-flex";
+		setTimeout(() => {
+			document.getElementById("alertBox").style.display = "none";
+		}, 5000);
+		document.getElementById("skipElement").focus();
+	} else {
+		document
+			.getElementsByClassName("divOfList")
+			[itemIndexInArray].querySelectorAll("button")[0]
+			.focus();
+	}
+}
+
 //Whenever the "Add To Cart" button is pressed, this function will handle the data updation in the Grocery List
 function addItemToList() {
 	let itemName = document.getElementById("itemName1").value;
@@ -95,6 +119,7 @@ function addItemToList() {
 		setTimeout(() => {
 			document.getElementById("alertBox").style.display = "none";
 		}, 5000);
+		document.getElementById("quantity1").focus();
 		// document.getElementById("buttonInAlert").focus();
 	} else {
 		let itemIndexInArray = listOfItems.findIndex(
@@ -112,6 +137,7 @@ function addItemToList() {
 
 			let listEntry = createListElement(itemName, quantityValue);
 			document.getElementById("groceryList").append(listEntry);
+			document.getElementById("groceryList").lastChild.focus();
 		} else {
 			//If there is an existing item, with the inserted name, then we will update its value in the array
 			let currentValue = Number(listOfItems[itemIndexInArray]["quantity"]);
@@ -125,12 +151,13 @@ function addItemToList() {
 				document.getElementsByClassName("divOfList")[itemIndexInArray];
 			let parentInList = childInList.parentNode;
 			parentInList.replaceChild(listEntry, childInList);
+			document.getElementsByClassName("divOfList")[itemIndexInArray].focus();
+			// document.getElementById("divOfList")[itemIndexInArray].select();
 		}
 		window.localStorage.setItem("listOfGrocery", JSON.stringify(listOfItems)); //Updating the local storage
+		document.getElementById("itemName1").value = ""; //Reseting the form values, for further use
+		document.getElementById("quantity1").value = "";
 	}
-
-	document.getElementById("itemName1").value = ""; //Reseting the form values, for further use
-	document.getElementById("quantity1").value = "";
 }
 
 //Whenever the "Edit Item" button is pressed in the form, this function will handle the data updation in the Grocery List
@@ -150,6 +177,7 @@ function updateItemToList() {
 		setTimeout(() => {
 			document.getElementById("alertBox").style.display = "none";
 		}, 5000);
+		document.getElementById("itemName2").focus();
 	} else if (Number(quantity) <= 0) {
 		document.getElementById("textInAlert").textContent =
 			"Sorry!! We can not insert negative or zero quantity";
@@ -157,6 +185,7 @@ function updateItemToList() {
 		setTimeout(() => {
 			document.getElementById("alertBox").style.display = "none";
 		}, 5000);
+		document.getElementById("quantity2").focus();
 	} else {
 		listOfItems[itemIndexInArray]["quantity"] = quantity;
 		window.localStorage.setItem("listOfGrocery", JSON.stringify(listOfItems));
@@ -167,20 +196,23 @@ function updateItemToList() {
 			document.getElementsByClassName("divOfList")[itemIndexInArray];
 		let parentInList = childInList.parentNode;
 		parentInList.replaceChild(listEntry, childInList);
+
+		document.getElementById("itemName2").value = "";
+		document.getElementById("quantity2").value = "";
+
+		document.getElementById("editItemHeading").style.display = "none";
+		document.getElementById("editItemForm").style.display = "none";
+
+		document.getElementById("addItemHeading").style.display = "block";
+		document.getElementById("addItemForm").style.display = "block";
 	}
-
-	document.getElementById("itemName2").value = "";
-	document.getElementById("quantity2").value = "";
-
-	document.getElementById("editItemHeading").style.display = "none";
-	document.getElementById("editItemForm").style.display = "none";
-
-	document.getElementById("addItemHeading").style.display = "block";
-	document.getElementById("addItemForm").style.display = "block";
 }
 
 //Whenever the edit button is pressed in the list, this function will be called, which in turn will call updateItemToList(), and update the form
 function editItemFromList(itemName, quantity) {
+	document.getElementById("itemName1").value = "";
+	document.getElementById("quantity1").value = "";
+
 	document.getElementById("addItemHeading").style.display = "none";
 	document.getElementById("addItemForm").style.display = "none";
 
