@@ -19,41 +19,7 @@ body {
 	justify-content: space-around;
 }
 
-#skipLink {
-	position: absolute;
-	/* transition: top 0.5s; */
-	top: -3rem;
-}
-
-#skipLink:focus,
-#skipLink:focus-within {
-	position: absolute;
-	top: 0.5rem;
-	width: 45%;
-	display: inline-flex;
-	justify-content: space-around;
-	border: 2px solid hsl(206, 74%, 54%);
-	background: hsl(206, 74%, 90%);
-}
-
-/* CSS for Alert  */
-#alertBox {
-	z-index: -1;
-	position: absolute;
-	/* bottom: 10%;
-	left: 10%; */
-	bottom: 0%;
-	left: 0%;
-	width: auto;
-	height: auto;
-	border: 2px solid hsl(206, 74%, 54%);
-	background: hsl(206, 74%, 90%);
-	/* height: 20%; */
-	margin-left: 0%;
-}
-
 /* CSS for Form */
-
 #form {
 	display: flex;
 	flex-direction: column;
@@ -104,22 +70,11 @@ h2 {
 	background-color: rgb(101, 102, 211);
 }
 
-#skipButton {
-	border-radius: 1em;
-	color: white;
-	background-color: rgb(71, 74, 226);
-}
-
-#skipButton:hover,
-#skipButton:focus {
-	background-color: rgb(101, 102, 211);
-}
-
 button {
 	font-size: 90%;
 }
 
-/* css for grocer list */
+/* css for grocery list */
 
 #groceryDivision {
 	background-color: rgb(236, 147, 199);
@@ -137,27 +92,6 @@ button {
 	width: 30%;
 	margin: 0 auto;
 	margin-top: 0%;
-}
-
-@media (max-height: 745px) {
-	body {
-		margin-bottom: 0%;
-	}
-	#form {
-		gap: 0%;
-	}
-
-	h2 {
-		margin-bottom: 1%;
-	}
-
-	#nameOfList {
-		margin-bottom: 0%;
-	}
-
-	#groceryDivision {
-		height: 70%;
-	}
 }
 
 ul {
@@ -213,11 +147,6 @@ ul {
 }
 
 .divOfButtons {
-	/* display: inline-flex;
-	justify-content: space-around;
-	align-items: center;
-	max-height: 90%;
-	max-width: 20%; */
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
@@ -257,6 +186,67 @@ ul {
 
 #nameOfList {
 	color: black;
+}
+
+/* CSS for Alert  */
+#alertBox {
+	z-index: -1;
+	position: absolute;
+	bottom: 0%;
+	left: 0%;
+	width: auto;
+	height: auto;
+	border: 2px solid hsl(206, 74%, 54%);
+	background: hsl(206, 74%, 90%);
+	margin-left: 0%;
+}
+
+#skipLink {
+	position: absolute;
+	top: -3rem;
+}
+
+#skipLink:focus,
+#skipLink:focus-within {
+	position: absolute;
+	top: 0.5rem;
+	width: 45%;
+	display: inline-flex;
+	justify-content: space-around;
+	border: 2px solid hsl(206, 74%, 54%);
+	background: hsl(206, 74%, 90%);
+}
+
+#skipButton {
+	border-radius: 1em;
+	color: white;
+	background-color: rgb(71, 74, 226);
+}
+
+#skipButton:hover,
+#skipButton:focus {
+	background-color: rgb(101, 102, 211);
+}
+
+@media (max-height: 745px) {
+	body {
+		margin-bottom: 0%;
+	}
+	#form {
+		gap: 0%;
+	}
+
+	h2 {
+		margin-bottom: 1%;
+	}
+
+	#nameOfList {
+		margin-bottom: 0%;
+	}
+
+	#groceryDivision {
+		height: 70%;
+	}
 }
 
 @media (max-width: 768px) {
@@ -326,7 +316,7 @@ ul {
 	}
 }
 
-@media (max-width: 359px) {
+@media (max-width: 385px) {
 	body {
 		font-size: 0.85em;
 	}
@@ -345,7 +335,6 @@ ul {
 	.resetButton {
 		height: 15%;
 		width: 40%;
-		/* margin-right: 0%; */
 	}
 
 	h1 {
@@ -369,6 +358,7 @@ ul {
 
 	.mainParaInList {
 		width: 100%;
+		height: 45%;
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
@@ -376,7 +366,7 @@ ul {
 
 	.itemNameInList,
 	.quantityInList {
-		height: 80%;
+		height: 100%;
 	}
 
 	.divOfButtons {
@@ -393,9 +383,6 @@ ul {
 		height: 90%;
 	}
 
-	.mainParaInList {
-		height: 45%;
-	}
 	#skipLink:focus,
 	#skipLink:focus-within {
 		width: 100%;

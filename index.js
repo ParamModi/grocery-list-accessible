@@ -13,12 +13,11 @@ if (listOfItems === null) {
 if (listOfItems.length <= 0) {
 	emptyImage.style.display = "block";
 }
-
 //Create the list element to be updated in the Grocery List
 function createListElement(itemName, quantity) {
 	let listEntry = document.createElement("li");
 	listEntry.innerHTML = `
-  <div class="mainParaInList"><p class="itemNameInList" id=${itemName}>Item: <strong class="fullName">${itemName}</strong></p><p class="quantityInList">Quantity: <strong>${quantity}</strong></p></div>
+  <div class="mainParaInList" id=${itemName}><p class="itemNameInList">Item: <strong class="fullName">${itemName}</strong></p><p class="quantityInList">Quantity: <strong>${quantity}</strong></p></div>
   `;
 	listEntry.classList.add("divOfList");
 
@@ -44,9 +43,26 @@ function createListElement(itemName, quantity) {
 	containerOfButtons.append(deleteButton);
 
 	listEntry.append(containerOfButtons);
-	// listEntry.setAttribute("tabindex", "0");
 
 	return listEntry;
+}
+
+//To make the Add Item Form visible on screen
+function showAddForm() {
+	document.getElementById("editItemHeading").style.display = "none";
+	document.getElementById("editItemForm").style.display = "none";
+
+	document.getElementById("addItemHeading").style.display = "block";
+	document.getElementById("addItemForm").style.display = "block";
+}
+
+//To make the Edit Item Form visible on screen
+function showEditForm() {
+	document.getElementById("addItemHeading").style.display = "none";
+	document.getElementById("addItemForm").style.display = "none";
+
+	document.getElementById("editItemHeading").style.display = "block";
+	document.getElementById("editItemForm").style.display = "block";
 }
 
 //For every element of localstorage, we will create a list entry, and append it to the main grocery list
@@ -78,10 +94,12 @@ document.querySelector("#resetButton2").addEventListener("click", () => {
 	document.getElementById("addItemHeading").style.display = "block";
 	document.getElementById("addItemForm").style.display = "block";
 });
+document.getElementById("skipLink").addEventListener("focus", () => {
+	document.getElementById("skipElement").value = "";
+});
 
 //When the page loads, initially  we will show "Add Grocery Item" Form
-document.getElementById("editItemHeading").style.display = "none";
-document.getElementById("editItemForm").style.display = "none";
+showAddForm();
 document.getElementById("alertBox").style.display = "none";
 
 //Function for skip link
@@ -96,9 +114,10 @@ function skipToItem() {
 		document.getElementById("alertBox").style.display = "inline-flex";
 		setTimeout(() => {
 			document.getElementById("alertBox").style.display = "none";
-		}, 5000);
+		}, 10000);
 		document.getElementById("skipElement").focus();
 	} else {
+		document.getElementById("skipElement").value = "";
 		document
 			.getElementsByClassName("divOfList")
 			[itemIndexInArray].querySelectorAll("button")[0]
@@ -112,15 +131,13 @@ function addItemToList() {
 	let quantityValue = document.getElementById("quantity1").value;
 
 	if (Number(quantityValue) <= 0) {
-		// alert("Sorry!! We can not insert negative or zero quantity.");
 		document.getElementById("textInAlert").textContent =
 			"Sorry!! We can not insert negative or zero quantity";
 		document.getElementById("alertBox").style.display = "inline-flex";
 		setTimeout(() => {
 			document.getElementById("alertBox").style.display = "none";
-		}, 5000);
+		}, 10000);
 		document.getElementById("quantity1").focus();
-		// document.getElementById("buttonInAlert").focus();
 	} else {
 		let itemIndexInArray = listOfItems.findIndex(
 			(entry) => entry["item"] == itemName
@@ -176,7 +193,7 @@ function updateItemToList() {
 		document.getElementById("alertBox").style.display = "inline-flex";
 		setTimeout(() => {
 			document.getElementById("alertBox").style.display = "none";
-		}, 5000);
+		}, 10000);
 		document.getElementById("itemName2").focus();
 	} else if (Number(quantity) <= 0) {
 		document.getElementById("textInAlert").textContent =
@@ -184,7 +201,7 @@ function updateItemToList() {
 		document.getElementById("alertBox").style.display = "inline-flex";
 		setTimeout(() => {
 			document.getElementById("alertBox").style.display = "none";
-		}, 5000);
+		}, 10000);
 		document.getElementById("quantity2").focus();
 	} else {
 		listOfItems[itemIndexInArray]["quantity"] = quantity;
@@ -199,12 +216,7 @@ function updateItemToList() {
 
 		document.getElementById("itemName2").value = "";
 		document.getElementById("quantity2").value = "";
-
-		document.getElementById("editItemHeading").style.display = "none";
-		document.getElementById("editItemForm").style.display = "none";
-
-		document.getElementById("addItemHeading").style.display = "block";
-		document.getElementById("addItemForm").style.display = "block";
+		showAddForm();
 	}
 }
 
@@ -212,16 +224,9 @@ function updateItemToList() {
 function editItemFromList(itemName, quantity) {
 	document.getElementById("itemName1").value = "";
 	document.getElementById("quantity1").value = "";
-
-	document.getElementById("addItemHeading").style.display = "none";
-	document.getElementById("addItemForm").style.display = "none";
-
-	document.getElementById("editItemHeading").style.display = "block";
-	document.getElementById("editItemForm").style.display = "block";
-
+	showEditForm();
 	document.getElementById("itemName2").value = itemName;
 	document.getElementById("quantity2").value = quantity;
-
 	document.getElementById("quantity2").focus();
 	document.getElementById("quantity2").click();
 }
@@ -231,10 +236,14 @@ function deleteItemFromList(itemName, quantity) {
 	let itemIndexInArray = listOfItems.findIndex(
 		(entry) => entry["item"] == itemName
 	);
-
 	listOfItems.splice(itemIndexInArray, 1);
 	window.localStorage.setItem("listOfGrocery", JSON.stringify(listOfItems));
 	document.getElementsByClassName("divOfList")[itemIndexInArray].remove();
 
+	if (document.getElementById("itemName2").value == itemName) {
+		document.getElementById("itemName2").value = "";
+		document.getElementById("quantity2").value = "";
+		showAddForm();
+	}
 	if (listOfItems.length == 0) emptyImage.style.display = "block"; //If the list is empty, emptyImage will be shown
 }
