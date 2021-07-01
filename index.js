@@ -1,18 +1,50 @@
 let listOfItems;
 
-let emptyImage = document.getElementById("emptyCart"); //updating the image for empty cart
-emptyImage.src = "./assets/empty-cart.png";
-emptyImage.style.display = "none";
-
 listOfItems = JSON.parse(window.localStorage.getItem("listOfGrocery")); //Getting data from local storage
 
 if (listOfItems === null) {
 	listOfItems = [];
 }
+
+let emptyImage = document.getElementById("emptyCart"); //updating the image for empty cart
+emptyImage.src = "./assets/empty-cart.png";
+emptyImage.style.display = "none";
+
 //If local storage is empty, then image for empty cart will be shown
 if (listOfItems.length <= 0) {
 	emptyImage.style.display = "block";
 }
+
+//To make the Add Item Form visible on screen
+function showAddForm() {
+	document.getElementById("editItemHeading").style.display = "none";
+	document.getElementById("editItemForm").style.display = "none";
+
+	document.getElementById("addItemHeading").style.display = "block";
+	document.getElementById("addItemForm").style.display = "block";
+}
+
+//To make the Edit Item Form visible on screen
+function showEditForm() {
+	document.getElementById("addItemHeading").style.display = "none";
+	document.getElementById("addItemForm").style.display = "none";
+
+	document.getElementById("editItemHeading").style.display = "block";
+	document.getElementById("editItemForm").style.display = "block";
+}
+
+//To reset the Add Item Form
+function clearAddForm() {
+	document.getElementById("itemName1").value = "";
+	document.getElementById("quantity1").value = "";
+}
+
+//To reset the Edit Item Form
+function clearEditform() {
+	document.getElementById("itemName2").value = "";
+	document.getElementById("quantity2").value = "";
+}
+
 //Create the list element to be updated in the Grocery List
 function createListElement(itemName, quantity) {
 	let listEntry = document.createElement("li");
@@ -47,24 +79,6 @@ function createListElement(itemName, quantity) {
 	return listEntry;
 }
 
-//To make the Add Item Form visible on screen
-function showAddForm() {
-	document.getElementById("editItemHeading").style.display = "none";
-	document.getElementById("editItemForm").style.display = "none";
-
-	document.getElementById("addItemHeading").style.display = "block";
-	document.getElementById("addItemForm").style.display = "block";
-}
-
-//To make the Edit Item Form visible on screen
-function showEditForm() {
-	document.getElementById("addItemHeading").style.display = "none";
-	document.getElementById("addItemForm").style.display = "none";
-
-	document.getElementById("editItemHeading").style.display = "block";
-	document.getElementById("editItemForm").style.display = "block";
-}
-
 //For every element of localstorage, we will create a list entry, and append it to the main grocery list
 listOfItems.forEach((data) => {
 	let itemName = data["item"];
@@ -87,13 +101,11 @@ document.querySelector("#submitButton1").addEventListener("click", () => {
 document.querySelector("#submitButton2").addEventListener("click", () => {
 	updateItemToList();
 });
-document.querySelector("#resetButton2").addEventListener("click", () => {
-	document.getElementById("editItemHeading").style.display = "none";
-	document.getElementById("editItemForm").style.display = "none";
 
-	document.getElementById("addItemHeading").style.display = "block";
-	document.getElementById("addItemForm").style.display = "block";
+document.querySelector("#resetButton2").addEventListener("click", () => {
+	showAddForm();
 });
+
 document.getElementById("skipLink").addEventListener("focus", () => {
 	document.getElementById("skipElement").value = "";
 });
@@ -104,11 +116,15 @@ document.getElementById("alertBox").style.display = "none";
 
 //Function to alert something
 function showAlert(alertString) {
-	document.getElementById("textInAlert").textContent = alertString;
-	document.getElementById("alertBox").style.display = "inline-flex";
-	setTimeout(() => {
-		document.getElementById("alertBox").style.display = "none";
-	}, 10000);
+	return new Promise((resolve, reject) => {
+		document.getElementById("textInAlert").textContent = alertString;
+		document.getElementById("alertBox").setAttribute("aria-label", alertString);
+		document.getElementById("alertBox").style.display = "inline-flex";
+		setTimeout(() => {
+			document.getElementById("alertBox").style.display = "none";
+			resolve();
+		}, 5000);
+	});
 }
 
 //Function for skip link
@@ -118,8 +134,11 @@ function skipToItem() {
 		(entry) => entry["item"] == itemName
 	);
 	if (itemIndexInArray == -1) {
-		showAlert("Sorry!! There is no such Item available in the Grocery List");
-		document.getElementById("skipElement").focus();
+		showAlert(
+			"Sorry!! There is no such Item available in the Grocery List"
+		).then(() => {
+			document.getElementById("skipElement").focus();
+		});
 	} else {
 		document.getElementById("skipElement").value = "";
 		document
@@ -135,8 +154,11 @@ function addItemToList() {
 	let quantityValue = document.getElementById("quantity1").value;
 
 	if (Number(quantityValue) <= 0) {
-		showAlert("Sorry!! We can not insert negative or zero quantity");
-		document.getElementById("quantity1").focus();
+		showAlert("Sorry!! We can not insert negative or zero quantity").then(
+			() => {
+				document.getElementById("quantity1").focus();
+			}
+		);
 	} else {
 		let itemIndexInArray = listOfItems.findIndex(
 			(entry) => entry["item"] == itemName
@@ -168,12 +190,9 @@ function addItemToList() {
 			let parentInList = childInList.parentNode;
 			parentInList.replaceChild(listEntry, childInList);
 			document.getElementsByClassName("divOfList")[itemIndexInArray].focus();
-			// document.getElementById("divOfList")[itemIndexInArray].select();
 		}
 		window.localStorage.setItem("listOfGrocery", JSON.stringify(listOfItems)); //Updating the local storage
-		document.getElementById("itemName1").value = ""; //Reseting the form values, for further use
-		document.getElementById("quantity1").value = "";
-
+		clearAddForm();
 		showAlert(itemName + " is Added Successfully");
 	}
 }
@@ -189,11 +208,17 @@ function updateItemToList() {
 
 	//If we delete the entry, after pressing the edit button in the list
 	if (itemIndexInArray == -1) {
-		showAlert("Sorry!! There is no such item available in the cart");
-		document.getElementById("itemName2").focus();
+		showAlert("Sorry!! There is no such item available in the cart").then(
+			() => {
+				document.getElementById("itemName2").focus();
+			}
+		);
 	} else if (Number(quantity) <= 0) {
-		showAlert("Sorry!! We can not insert negative or zero quantity");
-		document.getElementById("quantity2").focus();
+		showAlert("Sorry!! We can not insert negative or zero quantity").then(
+			() => {
+				document.getElementById("quantity2").focus();
+			}
+		);
 	} else {
 		listOfItems[itemIndexInArray]["quantity"] = quantity;
 		window.localStorage.setItem("listOfGrocery", JSON.stringify(listOfItems));
@@ -204,9 +229,7 @@ function updateItemToList() {
 			document.getElementsByClassName("divOfList")[itemIndexInArray];
 		let parentInList = childInList.parentNode;
 		parentInList.replaceChild(listEntry, childInList);
-		document.getElementById("itemName2").value = "";
-		document.getElementById("quantity2").value = "";
-		// showAlert("Quantity of " + itemName + " is updated successfully");
+		clearEditform();
 		showAddForm();
 		showAlert(itemName + " is updated Successfully");
 	}
@@ -214,8 +237,7 @@ function updateItemToList() {
 
 //Whenever the edit button is pressed in the list, this function will be called, which in turn will call updateItemToList(), and update the form
 function editItemFromList(itemName, quantity) {
-	document.getElementById("itemName1").value = "";
-	document.getElementById("quantity1").value = "";
+	clearAddForm();
 	showEditForm();
 	document.getElementById("itemName2").value = itemName;
 	document.getElementById("quantity2").value = quantity;
@@ -233,8 +255,7 @@ function deleteItemFromList(itemName, quantity) {
 	document.getElementsByClassName("divOfList")[itemIndexInArray].remove();
 
 	if (document.getElementById("itemName2").value == itemName) {
-		document.getElementById("itemName2").value = "";
-		document.getElementById("quantity2").value = "";
+		clearEditform();
 		showAddForm();
 	}
 	showAlert(itemName + " is deleted Successfully");
