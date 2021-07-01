@@ -102,6 +102,15 @@ document.getElementById("skipLink").addEventListener("focus", () => {
 showAddForm();
 document.getElementById("alertBox").style.display = "none";
 
+//Function to alert something
+function showAlert(alertString) {
+	document.getElementById("textInAlert").textContent = alertString;
+	document.getElementById("alertBox").style.display = "inline-flex";
+	setTimeout(() => {
+		document.getElementById("alertBox").style.display = "none";
+	}, 10000);
+}
+
 //Function for skip link
 function skipToItem() {
 	let itemName = document.getElementById("skipElement").value;
@@ -109,12 +118,7 @@ function skipToItem() {
 		(entry) => entry["item"] == itemName
 	);
 	if (itemIndexInArray == -1) {
-		document.getElementById("textInAlert").textContent =
-			"Sorry!! There is no such Item available in the Grocery List";
-		document.getElementById("alertBox").style.display = "inline-flex";
-		setTimeout(() => {
-			document.getElementById("alertBox").style.display = "none";
-		}, 10000);
+		showAlert("Sorry!! There is no such Item available in the Grocery List");
 		document.getElementById("skipElement").focus();
 	} else {
 		document.getElementById("skipElement").value = "";
@@ -131,12 +135,7 @@ function addItemToList() {
 	let quantityValue = document.getElementById("quantity1").value;
 
 	if (Number(quantityValue) <= 0) {
-		document.getElementById("textInAlert").textContent =
-			"Sorry!! We can not insert negative or zero quantity";
-		document.getElementById("alertBox").style.display = "inline-flex";
-		setTimeout(() => {
-			document.getElementById("alertBox").style.display = "none";
-		}, 10000);
+		showAlert("Sorry!! We can not insert negative or zero quantity");
 		document.getElementById("quantity1").focus();
 	} else {
 		let itemIndexInArray = listOfItems.findIndex(
@@ -174,6 +173,8 @@ function addItemToList() {
 		window.localStorage.setItem("listOfGrocery", JSON.stringify(listOfItems)); //Updating the local storage
 		document.getElementById("itemName1").value = ""; //Reseting the form values, for further use
 		document.getElementById("quantity1").value = "";
+
+		showAlert(itemName + " is Added Successfully");
 	}
 }
 
@@ -188,20 +189,10 @@ function updateItemToList() {
 
 	//If we delete the entry, after pressing the edit button in the list
 	if (itemIndexInArray == -1) {
-		document.getElementById("textInAlert").textContent =
-			"Sorry!! There is no such item available in the cart";
-		document.getElementById("alertBox").style.display = "inline-flex";
-		setTimeout(() => {
-			document.getElementById("alertBox").style.display = "none";
-		}, 10000);
+		showAlert("Sorry!! There is no such item available in the cart");
 		document.getElementById("itemName2").focus();
 	} else if (Number(quantity) <= 0) {
-		document.getElementById("textInAlert").textContent =
-			"Sorry!! We can not insert negative or zero quantity";
-		document.getElementById("alertBox").style.display = "inline-flex";
-		setTimeout(() => {
-			document.getElementById("alertBox").style.display = "none";
-		}, 10000);
+		showAlert("Sorry!! We can not insert negative or zero quantity");
 		document.getElementById("quantity2").focus();
 	} else {
 		listOfItems[itemIndexInArray]["quantity"] = quantity;
@@ -213,10 +204,11 @@ function updateItemToList() {
 			document.getElementsByClassName("divOfList")[itemIndexInArray];
 		let parentInList = childInList.parentNode;
 		parentInList.replaceChild(listEntry, childInList);
-
 		document.getElementById("itemName2").value = "";
 		document.getElementById("quantity2").value = "";
+		// showAlert("Quantity of " + itemName + " is updated successfully");
 		showAddForm();
+		showAlert(itemName + " is updated Successfully");
 	}
 }
 
@@ -245,5 +237,6 @@ function deleteItemFromList(itemName, quantity) {
 		document.getElementById("quantity2").value = "";
 		showAddForm();
 	}
+	showAlert(itemName + " is deleted Successfully");
 	if (listOfItems.length == 0) emptyImage.style.display = "block"; //If the list is empty, emptyImage will be shown
 }
