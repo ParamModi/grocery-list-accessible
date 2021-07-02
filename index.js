@@ -159,6 +159,10 @@ function addItemToList() {
 				document.getElementById("quantity1").focus();
 			}
 		);
+	} else if (/\S/g.test(itemName) == false) {
+		showAlert("Sorry!! That's not a valid item name").then(() => {
+			document.getElementById("itemName1").focus();
+		});
 	} else {
 		let itemIndexInArray = listOfItems.findIndex(
 			(entry) => entry["item"] == itemName
