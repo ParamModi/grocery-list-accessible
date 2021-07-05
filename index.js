@@ -66,7 +66,7 @@ function createListElement(itemName, quantity) {
 	deleteButton.setAttribute("aria-describedby", itemName);
 	deleteButton.classList.add("deleteButton");
 	deleteButton.addEventListener("click", () => {
-		deleteItemFromList(itemName, quantity);
+		openConfirmationDialog(itemName, quantity);
 	});
 
 	let containerOfButtons = document.createElement("div");
@@ -89,7 +89,7 @@ listOfItems.forEach((data) => {
 	document.getElementById("groceryList").append(listEntry);
 });
 
-//Event Listneres for the buttons in the form
+//Event Listeners for the buttons in the form
 document.getElementById("skipButton").addEventListener("click", () => {
 	skipToItem();
 });
@@ -110,8 +110,22 @@ document.getElementById("skipLink").addEventListener("focus", () => {
 	document.getElementById("skipElement").value = "";
 });
 
+//Event listeners for delete-confirmation
+document.querySelector(".dialog_mask").addEventListener("click", () => {
+	closeConfirmation();
+});
+
+document.querySelector(".yes_in_dialog").addEventListener("click", () => {
+	deleteItemFromList(itemToBeDeleted);
+});
+
+document.querySelector(".no_in_dialog").addEventListener("click", () => {
+	closeConfirmation();
+});
+
 //When the page loads, initially  we will show "Add Grocery Item" Form
 showAddForm();
+let nextElementToFocus, itemToBeDeleted;
 document.getElementById("alertBox").style.display = "none";
 
 //Function to alert something
@@ -125,6 +139,14 @@ function showAlert(alertString) {
 			resolve();
 		}, 5000);
 	});
+}
+
+//Function to check for Escape key
+function checkForEscape(event) {
+	if (event.keyCode === 27) {
+		event.preventDefault();
+		closeConfirmation();
+	}
 }
 
 //Function for skip link
@@ -263,5 +285,37 @@ function deleteItemFromList(itemName, quantity) {
 		showAddForm();
 	}
 	showAlert(itemName + " is deleted Successfully");
+	if (itemIndexInArray < listOfItems.length) {
+		nextElementToFocus = document
+			.getElementsByClassName("divOfList")
+			[itemIndexInArray].querySelector(".editButton");
+	}
+	closeConfirmation();
+
 	if (listOfItems.length == 0) emptyImage.style.display = "block"; //If the list is empty, emptyImage will be shown
+}
+
+//On the click of Delete BUtton, this function will be executed
+function openConfirmationDialog(itemName, quantity) {
+	nextElementToFocus = document.activeElement;
+	Array.from(document.body.children).forEach((childElement) => {
+		if (childElement !== document.querySelector(".dialog")) {
+			childElement.inert = true;
+		}
+	});
+	itemToBeDeleted = itemName;
+	document.addEventListener("keydown", checkForEscape);
+	document.querySelector(".dialog").classList.add("dialogActivated");
+	document.querySelector(".dialog_window").focus();
+}
+
+function closeConfirmation() {
+	Array.from(document.body.children).forEach((childElement) => {
+		if (childElement !== document.querySelector(".dialog")) {
+			childElement.inert = false;
+		}
+	});
+	document.removeEventListener("keydown", checkForEscape);
+	document.querySelector(".dialog").classList.remove("dialogActivated");
+	nextElementToFocus.focus();
 }
