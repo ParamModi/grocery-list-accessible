@@ -38,6 +38,8 @@ body {
 	border: 2px solid hsl(206, 74%, 54%);
 	background: hsl(206, 74%, 90%);
 	padding: 1% 5%;
+	white-space: nowrap;
+	overflow: scroll;
 }
 
 .dialog_mask {

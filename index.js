@@ -103,6 +103,7 @@ document.querySelector("#submitButton2").addEventListener("click", () => {
 });
 
 document.querySelector("#resetButton2").addEventListener("click", () => {
+	clearEditform();
 	showAddForm();
 });
 
@@ -175,16 +176,16 @@ function addItemToList() {
 	let itemName = document.getElementById("itemName1").value;
 	let quantityValue = document.getElementById("quantity1").value;
 
-	if (Number(quantityValue) <= 0) {
+	if (/\S/gi.test(itemName) == false || /[a-z]/gi.test(itemName) == false) {
+		showAlert("Sorry!! That's not a valid item name").then(() => {
+			document.getElementById("itemName1").focus();
+		});
+	} else if (Number(quantityValue) <= 0) {
 		showAlert("Sorry!! We can not insert negative or zero quantity").then(
 			() => {
 				document.getElementById("quantity1").focus();
 			}
 		);
-	} else if (/\S/g.test(itemName) == false) {
-		showAlert("Sorry!! That's not a valid item name").then(() => {
-			document.getElementById("itemName1").focus();
-		});
 	} else {
 		let itemIndexInArray = listOfItems.findIndex(
 			(entry) => entry["item"] == itemName
@@ -201,7 +202,6 @@ function addItemToList() {
 
 			let listEntry = createListElement(itemName, quantityValue);
 			document.getElementById("groceryList").append(listEntry);
-			document.getElementById("groceryList").lastChild.focus();
 		} else {
 			//If there is an existing item, with the inserted name, then we will update its value in the array
 			let currentValue = Number(listOfItems[itemIndexInArray]["quantity"]);
@@ -215,11 +215,13 @@ function addItemToList() {
 				document.getElementsByClassName("divOfList")[itemIndexInArray];
 			let parentInList = childInList.parentNode;
 			parentInList.replaceChild(listEntry, childInList);
-			document.getElementsByClassName("divOfList")[itemIndexInArray].focus();
 		}
 		window.localStorage.setItem("listOfGrocery", JSON.stringify(listOfItems)); //Updating the local storage
 		clearAddForm();
-		showAlert(itemName + " is Added Successfully");
+		showAlert(
+			(itemName.length <= 20 ? itemName : itemName.slice(0, 20) + "...") +
+				" is Added Successfully"
+		);
 	}
 }
 
@@ -257,7 +259,12 @@ function updateItemToList() {
 		parentInList.replaceChild(listEntry, childInList);
 		clearEditform();
 		showAddForm();
-		showAlert(itemName + " is updated Successfully");
+		showAlert(
+			(itemName.length <= 20 ? itemName : itemName.slice(0, 20) + "...") +
+				" is updated Successfully"
+		).then(() => {
+			listEntry.querySelectorAll("button")[0].focus();
+		});
 	}
 }
 
@@ -284,12 +291,10 @@ function deleteItemFromList(itemName, quantity) {
 		clearEditform();
 		showAddForm();
 	}
-	showAlert(itemName + " is deleted Successfully");
-	if (itemIndexInArray < listOfItems.length) {
-		nextElementToFocus = document
-			.getElementsByClassName("divOfList")
-			[itemIndexInArray].querySelector(".editButton");
-	}
+	showAlert(
+		(itemName.length <= 20 ? itemName : itemName.slice(0, 20) + "...") +
+			" is deleted Successfully"
+	);
 	closeConfirmation();
 
 	if (listOfItems.length == 0) emptyImage.style.display = "block"; //If the list is empty, emptyImage will be shown
@@ -306,6 +311,10 @@ function openConfirmationDialog(itemName, quantity) {
 	itemToBeDeleted = itemName;
 	document.addEventListener("keydown", checkForEscape);
 	document.querySelector(".dialog").classList.add("dialogActivated");
+	document.getElementById("dialog_content").textContent =
+		"Are you sure you want to Delete " +
+		(itemName.length <= 20 ? itemName : itemName.slice(0, 20) + "...") +
+		"?";
 	document.querySelector(".dialog_window").focus();
 }
 

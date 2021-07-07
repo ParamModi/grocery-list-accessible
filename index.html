@@ -26,22 +26,22 @@
         
         <h2 id="addItemHeading">Add Grocery Item</h2>
         <form id="addItemForm" aria-label="Add Item In the Grocery List">
-        <label for="itemName1">Item Name:</label><br>
-        <input type="text" id="itemName1" required size="40"><br><br>
-        <label for="quantity1">Quantity:</label><br>
-        <input type="number" id="quantity1" min="1" required><br><br>
+        <label for="itemName1">Item Name* :</label><br>
+        <input type="text" id="itemName1" aria-required="true" size="40" aria-label="Item Name"><br><br>
+        <label for="quantity1">Quantity* :</label><br>
+        <input type="number" id="quantity1" min="1" aria-required="true" aria-label="Quantity"><br><br>
         <input type="button" id="submitButton1" value="Add To Cart" class="submitButton">
         <input type="reset" class = "resetButton" value="Reset">
         </form>
 
         <h2 id="editItemHeading">Edit Grocery Item</h2>
         <form id="editItemForm" aria-label="Edit Item In the Grocery List">
-        <label for="itemName2">Item Name:</label><br>
-        <input type="text" id="itemName2" required size="40"><br><br>
-        <label for="quantity2">Quantity:</label><br>
-        <input type="number" id="quantity2" min="1" required><br><br>
+        <label for="itemName2">Item Name* :</label><br>
+        <input type="text" id="itemName2" aria-required="true" size="40" aria-label="Item Name"><br><br>
+        <label for="quantity2">Quantity* :</label><br>
+        <input type="number" id="quantity2" min="1" aria-required="true" aria-label="Quantity"><br><br>
         <input type="button" id ="submitButton2" value="Edit Item" class="submitButton">
-        <input type="reset" id ="resetButton2" class="resetButton" value="Reset">
+        <input type="reset" id ="resetButton2" class="resetButton" value="Reset" aria-label="Reset to the default Add Item Form">
         </form>
       </div>
       
@@ -69,7 +69,7 @@
     </div>
 
 
-    <script type="text/javascript" src="index.js"></script>
+    <script src="index.js"></script>
     <script src="inert.js"></script>
   </body>
 </html>
